@@ -20,6 +20,7 @@ export default {
                 const { token } = data;
                 const loginInfo = data.data;
                 localStorage.setItem('token', token);
+                localStorage.setItem('loginInfo', JSON.stringify(loginInfo));
                 yield [
                     put({ type: 'user/saveUserInfo', payload: loginInfo }),
                     put(routerRedux.push('/todo'))

@@ -33,7 +33,8 @@ export default {
                 const _id = yield select(({ user }) => user._id)
                 yield [
                     put({ type: 'getTodoList', payload: { userId: _id } }),
-                    put({ type: 'closeAdd' })
+                    put({ type: 'closeAdd' }),
+                    put({ type: 'resetForm' })
                 ]
             } catch (e) {
                 message.error(e.message);
@@ -63,6 +64,13 @@ export default {
             return {
                 ...state,
                 ...params
+            }
+        },
+        'resetForm'(state) {
+            return {
+                ...state,
+                title: '',
+                content: '',
             }
         }
     },

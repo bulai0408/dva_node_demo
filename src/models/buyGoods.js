@@ -2,17 +2,14 @@ import { message } from 'antd';
 import { getData } from '../api';
 
 export default {
-    namespace: 'goods',
+    namespace: 'buyGoods',
     state: {
-        goodsList: [],
-        goodsName: '',
-        goodsId: '',
-        number: 0,
-        money: 0,
+        goodsDetail: undefined,
+        toBuyGoodsId: '',
+        number: 1,
         maxPurchaseNumber: 0,
         minPurchaseNumber: 0,
-        unit: '',
-        addGoodsVisible: false
+        addBuyVisible: false
     },
     effects: {
         *getGoodsList({ payload: params }, { put, call }) {
@@ -38,8 +35,7 @@ export default {
                 const _id = yield select(({ user }) => user._id)
                 yield [
                     put({ type: 'getGoodsList' }),
-                    put({ type: 'closeAdd' }),
-                    put({ type: 'resetForm' })
+                    put({ type: 'closeAdd' })
                 ]
             } catch (e) {
                 message.error(e.message);
@@ -56,31 +52,19 @@ export default {
         'showAdd'(state) {
             return {
                 ...state,
-                addGoodsVisible: true
+                addBuyVisible: true
             }
         },
         'closeAdd'(state) {
             return {
                 ...state,
-                addGoodsVisible: false
+                addBuyVisible: false
             }
         },
         'changeFormItem'(state, { payload: params }) {
             return {
                 ...state,
                 ...params
-            }
-        },
-        'resetForm'(state) {
-            return {
-                ...state,
-                goodsName: '',
-                goodsId: '',
-                number: 0,
-                money: 0,
-                maxPurchaseNumber: 0,
-                minPurchaseNumber: 0,
-                unit: '',
             }
         }
     },

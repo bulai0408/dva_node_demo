@@ -1,8 +1,7 @@
-export const initialUrl = 'http://localhost:8888'
+export const initialUrl = 'http://localhost:8888';
 
 export const getData = ({ url, method = 'get', params = {} }) => {
     const token = localStorage.getItem('token');
-    console.log(666, method);
     if (method === 'post') {
         return new Promise((resolve, reject) => {
             fetch(`${initialUrl}${url}`, {
@@ -16,12 +15,16 @@ export const getData = ({ url, method = 'get', params = {} }) => {
                 },
                 method
             })
-                .then(res => res.json())
-                .then(res => { resolve(res) })
+                .then(res => {
+                    console.log(res);
+                    return res.json();
+                })
+                .then(res => {
+                    resolve(res)
+                })
                 .catch(error => { reject(error) })
         })
     } else if (method === 'get') {
-
         const getParams = (params) => {
             let newPrams = '';
             const keyList = Object.keys(params);
@@ -50,7 +53,12 @@ export const getData = ({ url, method = 'get', params = {} }) => {
                 },
                 method
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (res.status === 401) {
+                        throw new Error('登录异常，请重新登录');
+                    }
+                    return res.json();
+                })
                 .then(res => { resolve(res) })
                 .catch(error => { reject(error) })
         })

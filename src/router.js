@@ -1,11 +1,11 @@
 import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
+import { Router, Route, Switch, Redirect } from 'dva/router';
 import IndexPage from './routes/IndexPage';
 import Products from './routes/Products';
 import RegisterPage from './routes/RegisterPage';
 import LoginPage from './routes/LoginPage';
 import TodoPage from './routes/TodoPage';
-import GoodsPage from './routes/GoodsPage';
+import GoodsPage from './routes/GoodsPage/index.js';
 import AddGoddsPage from './routes/AddGoddsPage';
 
 function RouterConfig({ history }) {

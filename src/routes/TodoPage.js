@@ -18,11 +18,13 @@ class TodoPage extends React.Component {
   }
 
   getData = () => {
-    const { dispatch, user: { _id } } = this.props;
+    const { dispatch } = this.props;
+    const loginInfo = localStorage.getItem('loginInfo');
+    const parsedLoginInfo = loginInfo ? JSON.parse(loginInfo) : {};
     dispatch({
       type: 'todo/getTodoList',
       payload: {
-        userId: _id
+        userId: parsedLoginInfo._id
       }
     })
   }
@@ -44,23 +46,33 @@ class TodoPage extends React.Component {
   }
 
   handleAddTodoSubmit = () => {
+    const { validateFields } = this.todoForm;
     const { user: { _id }, dispatch, todo: { title, content, } } = this.props;
-    dispatch({
-      type: 'todo/addTodo',
-      payload: {
-        title,
-        content,
-        userId: _id
+    validateFields((err, values) => {
+      if (!err) {
+        dispatch({
+          type: 'todo/addTodo',
+          payload: {
+            title,
+            content,
+            userId: _id
+          }
+        })
       }
     })
   }
 
   handleAddGoodsSubmit = () => {
+    const { validateFields } = this.goodsForm;
     const { dispatch, goods } = this.props;
-    dispatch({
-      type: 'goods/addGoods',
-      payload: {
-        ...goods
+    validateFields((err, values) => {
+      if (!err) {
+        dispatch({
+          type: 'goods/addGoods',
+          payload: {
+            ...goods
+          }
+        })
       }
     })
   }
@@ -89,19 +101,26 @@ class TodoPage extends React.Component {
       </div>
     ))
 
+    const loginInfo = localStorage.getItem('loginInfo');
+    const parsedLoginInfo = loginInfo ? JSON.parse(loginInfo) : {};
+
     return (
       <div className={styles.normal}>
-        <h1>{username},你好</h1>
+        <h1>{parsedLoginInfo.username},你好</h1>
         <h1>todo</h1>
-        <Button onClick={this.getData}>查看代办</Button>
-        <Button onClick={this.showAdd}>新建代办</Button>
-        <Button onClick={this.toGoddsList}>去商品列表</Button>
-        <Button onClick={this.showAddGoods}>去添加商品</Button>
+        <div>
+          <Button className={styles.marginButton} onClick={this.showAdd}>新建代办</Button>
+          <Button className={styles.marginButton} onClick={this.getData}>查看代办</Button>
+          <Button className={styles.marginButton} onClick={this.showAddGoods}>添加商品</Button>
+          <Button className={styles.marginButton} onClick={this.toGoddsList}>去商品列表</Button>
+        </div>
+
         {todoUI}
 
         <Modal
           visible={addTodoVisible}
           title='新建代办'
+          destroyOnClose
           onCancel={this.closeAdd}
           footer={
             [
@@ -110,11 +129,12 @@ class TodoPage extends React.Component {
             ]
           }
         >
-          <TodoForm dispatch={dispatch} />
+          <TodoForm dispatch={dispatch} ref={ref => { this.todoForm = ref; }} />
         </Modal>
         <Modal
           visible={addGoodsVisible}
           title='新建商品'
+          destroyOnClose
           onCancel={this.closeAddGoods}
           footer={
             [
@@ -123,7 +143,7 @@ class TodoPage extends React.Component {
             ]
           }
         >
-          <GoodsForm dispatch={dispatch} />
+          <GoodsForm dispatch={dispatch} ref={ref => { this.goodsForm = ref; }} />
         </Modal>
       </div>
     );

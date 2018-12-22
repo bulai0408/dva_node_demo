@@ -14,6 +14,7 @@ app.model(require('./models/login').default);
 app.model(require('./models/user').default);
 app.model(require('./models/todo').default);
 app.model(require('./models/goods').default);
+app.model(require('./models/buyGoods').default);
 
 // 4. Router
 app.router(require('./router').default);

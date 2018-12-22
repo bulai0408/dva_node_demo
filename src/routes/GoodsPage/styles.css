@@ -1,0 +1,21 @@
+.root{
+ 
+}
+
+.normal {
+  font-family: Georgia, sans-serif;
+  margin-top: 3em;
+  text-align: center;
+}
+
+.goodsItem{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center
+}
+
+.goodsItem button{
+  margin-left: 20px;
+}
